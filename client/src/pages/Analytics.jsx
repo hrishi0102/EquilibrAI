@@ -2,6 +2,7 @@ import React, { useState, Fragment } from "react";
 import { CovalentClient } from "@covalenthq/client-sdk";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import { formatUnits } from "ethers"; // Updated import for ethers v6
+import { useNavigate } from "react-router-dom";
 
 function Analytics() {
   const [address, setAddress] = useState("");
@@ -10,8 +11,10 @@ function Analytics() {
   const [nftData, setNftData] = useState(null);
   const [nativeCurrencyData, setNativeCurrencyData] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const api_key = import.meta.env.VITE_COVALENT_API_KEY;
 
-  const client = new CovalentClient("");
+  const client = new CovalentClient(api_key);
 
   const getWalletTokenBalance = async () => {
     try {
@@ -188,7 +191,13 @@ function Analytics() {
                       <tbody>
                         {tokenData?.items?.length > 0 &&
                           tokenData.items.map((item, index) => (
-                            <tr key={item.contract_address}>
+                            <tr
+                              key={item.contract_address}
+                              onClick={() =>
+                                navigate(`/${item.contract_ticker_symbol}`)
+                              }
+                              className="cursor-pointer hover:bg-gray-50 transition-colors"
+                            >
                               <th scope="row">{index + 1}</th>
                               <td>
                                 <img
@@ -216,6 +225,7 @@ function Analytics() {
                     </table>
                   </div>
                 </div>
+                {/* Replace the existing NFT table rows with this */}
                 <div className="tab-pane container fade" id="nfts">
                   <div className="table-responsive my-4">
                     <table className="table table-striped table-light">
@@ -232,7 +242,13 @@ function Analytics() {
                       <tbody>
                         {nftData?.items?.length > 0 &&
                           nftData.items.map((item, index) => (
-                            <tr key={item.contract_address}>
+                            <tr
+                              key={item.contract_address}
+                              onClick={() =>
+                                navigate(`/nft/${item.contract_address}`)
+                              }
+                              className="cursor-pointer hover:bg-gray-50 transition-colors"
+                            >
                               <th scope="row">{index + 1}</th>
                               <td>{item.contract_name}</td>
                               <td>{item.contract_ticker_symbol}</td>

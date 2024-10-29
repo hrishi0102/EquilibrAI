@@ -39,12 +39,20 @@ const Header = () => {
                 Analytics
               </Link>
               <Link
-                to="/settings"
+                to="/whaletxns"
                 className={`${isActive(
-                  "/settings"
+                  "/whaletxns"
                 )} hover:text-blue-500 font-medium`}
               >
-                Settings
+                Whale
+              </Link>
+              <Link
+                to="/translate"
+                className={`${isActive(
+                  "/translate"
+                )} hover:text-blue-500 font-medium`}
+              >
+                Translate
               </Link>
             </nav>
           </div>

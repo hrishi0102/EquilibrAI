@@ -7,13 +7,11 @@ import Header from "./components/Header";
 import PortfolioSummary from "./components/portfolio/PortfolioSummary";
 import RebalancePanel from "./components/portfolio/RebalancePanel";
 import Analtyics from "./pages/Analytics";
-
-const Settings = () => (
-  <div className="p-6">
-    <h2 className="text-2xl font-bold mb-4">Settings</h2>
-    <p>Settings content will go here</p>
-  </div>
-);
+import WhaleTransactions from "./pages/WhaleTransactions";
+import Translate from "./pages/Translate";
+import TokenDetails from "./pages/TokenDetails";
+import NFTDetails from "./pages/NFTDetails";
+import TransactionHistory from "./pages/TransactionHistory";
 
 const PortfolioPage = () => (
   <div className="space-y-6">
@@ -39,7 +37,11 @@ function App() {
                 />
                 <Route path="/portfolio" element={<PortfolioPage />} />
                 <Route path="/analytics" element={<Analtyics />} />
-                <Route path="/settings" element={<Settings />} />
+                <Route path="/:symbol" element={<TokenDetails />} />
+                <Route path="/nft/:address" element={<NFTDetails />} />
+                <Route path="/whaletxns" element={<WhaleTransactions />} />
+                <Route path="/txn/:address" element={<TransactionHistory />} />
+                <Route path="/translate" element={<Translate />} />
               </Routes>
             </main>
           </div>
