@@ -6,6 +6,7 @@ const TransactionTranslator = () => {
   const [translation, setTranslation] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const api_key = import.meta.env.VITE_NOVES_TRANSLATE_API_KEY;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,7 +20,7 @@ const TransactionTranslator = () => {
         url: `https://translate.noves.fi/evm/eth/describeTx/${txHash}`,
         headers: {
           accept: "application/json",
-          apiKey: "VdSNSTOfNdkBF9Jj5h",
+          apiKey: api_key,
         },
       };
 
