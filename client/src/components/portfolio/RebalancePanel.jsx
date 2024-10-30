@@ -11,6 +11,7 @@ import { useTokenPrices } from "../../hooks/useTokenPrices";
 import { odosService } from "../../services/odosService";
 import AllocationSlider from "./AllocationSlider";
 import ConfirmationModal from "../shared/ConfirmationModal";
+import AIAdvisor from "../AIAdvisor";
 import Toast from "../shared/Toast";
 import Web3 from "web3";
 
@@ -231,7 +232,6 @@ const RebalancePanel = () => {
     <>
       <div className="card mt-6">
         <h2 className="text-xl font-semibold mb-4">Portfolio Rebalancing</h2>
-
         <div className="space-y-6">
           <div className="grid gap-6">
             {Object.keys(targetAllocations).map((token) => (

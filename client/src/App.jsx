@@ -12,6 +12,7 @@ import Translate from "./pages/Translate";
 import TokenDetails from "./pages/TokenDetails";
 import NFTDetails from "./pages/NFTDetails";
 import TransactionHistory from "./pages/TransactionHistory";
+import AIAnalysis from "./pages/AIAnalysis";
 
 const PortfolioPage = () => (
   <div className="space-y-6">
@@ -36,7 +37,8 @@ function App() {
                   element={<Navigate to="/portfolio" replace />}
                 />
                 <Route path="/portfolio" element={<PortfolioPage />} />
-                <Route path="/analytics" element={<Analtyics />} />
+                <Route path="/research" element={<Analtyics />} />
+                <Route path="/aianalysis" element={<AIAnalysis />} />
                 <Route path="/:symbol" element={<TokenDetails />} />
                 <Route path="/nft/:address" element={<NFTDetails />} />
                 <Route path="/whaletxns" element={<WhaleTransactions />} />

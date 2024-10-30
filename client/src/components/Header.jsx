@@ -31,12 +31,20 @@ const Header = () => {
                 Portfolio
               </Link>
               <Link
-                to="/analytics"
+                to="/aianalysis"
                 className={`${isActive(
-                  "/analytics"
+                  "/aianalysis"
                 )} hover:text-blue-500 font-medium`}
               >
-                Analytics
+                AI Analysis
+              </Link>
+              <Link
+                to="/research"
+                className={`${isActive(
+                  "/research"
+                )} hover:text-blue-500 font-medium`}
+              >
+                Research
               </Link>
               <Link
                 to="/whaletxns"
