@@ -19,7 +19,7 @@ const Header = () => {
               to="/"
               className="text-2xl font-bold text-gray-900 hover:text-gray-700"
             >
-              Portfolio Rebalancer
+              EquilibrAI
             </Link>
             <nav className="flex space-x-6">
               <Link
