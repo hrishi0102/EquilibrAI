@@ -28,6 +28,7 @@ class OdosService {
         outputTokens: params.outputTokens,
         userAddr: params.userAddr,
         slippageLimitPercent: 0.3,
+        pathVizImage: true, // Add this line
         referralCode: 0,
         disableRFQs: true,
         compact: true,

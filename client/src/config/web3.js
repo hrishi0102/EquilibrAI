@@ -22,7 +22,7 @@ export const SUPPORTED_TOKENS = {
   USDC: {
     symbol: "USDC",
     name: "USD Coin",
-    address: "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174", // Polygon USDC
+    address: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359", // Polygon USDC
     decimals: 6,
     logoURI: "/usdc-logo.png",
   },

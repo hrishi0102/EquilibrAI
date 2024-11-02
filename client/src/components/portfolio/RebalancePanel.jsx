@@ -11,7 +11,7 @@ import { useTokenPrices } from "../../hooks/useTokenPrices";
 import { odosService } from "../../services/odosService";
 import AllocationSlider from "./AllocationSlider";
 import ConfirmationModal from "../shared/ConfirmationModal";
-import AIAdvisor from "../AIAdvisor";
+import PathVisualizationModal from "../PathVisualizationModal";
 import Toast from "../shared/Toast";
 import Web3 from "web3";
 
@@ -23,6 +23,9 @@ const RebalancePanel = () => {
   const publicClient = usePublicClient();
   const { writeContract } = useWriteContract();
   const { prices, loading: pricesLoading } = useTokenPrices();
+  const [isPathModalOpen, setIsPathModalOpen] = useState(false);
+  const [pathVizImage, setPathVizImage] = useState("");
+  const [isLoadingPath, setIsLoadingPath] = useState(false);
 
   const [targetAllocations, setTargetAllocations] = useState({
     MATIC: 50,
@@ -54,6 +57,53 @@ const RebalancePanel = () => {
 
   const showToast = (message, type = "success") => {
     setToast({ message, type });
+  };
+
+  const getOdosPathVisualization = async (trades) => {
+    setIsLoadingPath(true);
+    try {
+      const sellTrades = trades.filter((t) => t.amount < 0);
+      const buyTrades = trades.filter((t) => t.amount > 0);
+
+      // Format input tokens
+      const inputTokens = sellTrades.map((trade) => {
+        const token = SUPPORTED_TOKENS[trade.token];
+        const amount = Math.abs(trade.amount);
+        return {
+          tokenAddress: token.address,
+          amount: parseUnits(
+            amount.toFixed(token.decimals),
+            token.decimals
+          ).toString(),
+        };
+      });
+
+      // Calculate proportions for output tokens
+      const totalBuyAmount = buyTrades.reduce(
+        (sum, trade) => sum + Math.abs(trade.amount),
+        0
+      );
+      const outputTokens = buyTrades.map((trade) => ({
+        tokenAddress: SUPPORTED_TOKENS[trade.token].address,
+        proportion: Math.abs(trade.amount) / totalBuyAmount,
+      }));
+
+      // Get quote with path visualization
+      const quoteResponse = await odosService.getQuote({
+        chainId: 137,
+        inputTokens,
+        outputTokens,
+        userAddr: address,
+        pathVizImage: true,
+      });
+
+      setPathVizImage(quoteResponse.pathVizImage);
+    } catch (error) {
+      console.error("Failed to get path visualization:", error);
+      showToast("Failed to generate path visualization", "error");
+    } finally {
+      setIsLoadingPath(false);
+    }
   };
 
   const calculateCurrentAllocations = () => {
@@ -116,7 +166,7 @@ const RebalancePanel = () => {
     });
   };
 
-  const handleRebalance = () => {
+  const handleRebalance = async () => {
     const trades = [];
     Object.keys(targetAllocations).forEach((token) => {
       const targetValue =
@@ -136,6 +186,12 @@ const RebalancePanel = () => {
     });
 
     setPendingTrades(trades);
+    setIsPathModalOpen(true);
+    await getOdosPathVisualization(trades);
+  };
+
+  const handlePathConfirmation = () => {
+    setIsPathModalOpen(false);
     setIsModalOpen(true);
   };
 
@@ -275,6 +331,14 @@ const RebalancePanel = () => {
           </button>
         </div>
       </div>
+
+      <PathVisualizationModal
+        isOpen={isPathModalOpen}
+        onClose={() => setIsPathModalOpen(false)}
+        onConfirm={handlePathConfirmation}
+        pathVizImage={pathVizImage}
+        isLoading={isLoadingPath}
+      />
 
       <ConfirmationModal
         isOpen={isModalOpen}
